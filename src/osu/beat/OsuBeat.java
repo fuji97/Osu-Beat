@@ -87,6 +87,10 @@ import java.awt.Rectangle;
 import java.awt.Dimension;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import javax.swing.event.ChangeListener;
+import javax.swing.event.ChangeEvent;
 
 public class OsuBeat {
 
@@ -234,6 +238,11 @@ public class OsuBeat {
 	//Set Language
 	public void setLanguage()
 	{
+		easing.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		//TODO
 		//source.setModel(new DefaultComboBoxModel<String>(new String[] {LanguageLoader.resAdd}));
 		easing.setModel(new DefaultComboBoxModel<String>(new String[] {LanguageLoader.easingNo, LanguageLoader.easingOut, LanguageLoader.easingIn}));
@@ -659,16 +668,17 @@ public class OsuBeat {
 		canLoad = true;
 	}
 
-	public void compoundMove(DefaultMutableTreeNode node, int res)
+	public void compoundMove(DefaultMutableTreeNode node, int bpm, int res)
 	{
 		if(!node.isLeaf()) {
 			for (int i=0; i<node.getChildCount(); i++) {
-				compoundMove((DefaultMutableTreeNode) node.getChildAt(i), res);
+				compoundMove((DefaultMutableTreeNode) node.getChildAt(i), bpm, res);
 			}
 		}
 		Util.com.get(((Command) node.getUserObject()).getBpm()).get(((Command) node.getUserObject()).getRes()).remove(node.getUserObject());
 		((Command) node.getUserObject()).setRes(res);
-		Util.com.get(((Command) node.getUserObject()).getBpm()).get(res).add((Command) node.getUserObject());
+		((Command) node.getUserObject()).setBpm(bpm);
+		Util.com.get(bpm).get(res).add((Command) node.getUserObject());
 	}
 	
 	public void setCommandValue(Command mCom)
@@ -676,7 +686,7 @@ public class OsuBeat {
 		if (mCom.getRes() != source.getSelectedIndex()) {
 			//Setting resource
 			mCom.setComMain(null);
-			compoundMove(mCom.getNode(), source.getSelectedIndex());
+			compoundMove(mCom.getNode(), mCom.getBpm(), source.getSelectedIndex());
 			Util.refresh(mCom.getBpm(), true);
 			//mCom.setRes(source.getSelectedIndex());
 			/*
@@ -998,6 +1008,12 @@ public class OsuBeat {
 		panelLeft.add(lblName, "cell 0 2,alignx left,aligny center");
 		
 		name = new JTextField();
+		name.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		panelLeft.add(name, "cell 1 2,growx,aligny center");
 		name.setColumns(10);
 		
@@ -1005,6 +1021,11 @@ public class OsuBeat {
 		lblSubCommand.setToolTipText("Select the sub-command");
 		lblSubCommand.setEnabled(false);
 		panelLeft.add(lblSubCommand, "cell 0 3,alignx left,aligny center");
+		subCommand.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		
 		
 		subCommand.setEnabled(false);
@@ -1023,6 +1044,11 @@ public class OsuBeat {
 		
 		lblStartTime.setToolTipText("Start Time");
 		panelLeft.add(lblStartTime, "cell 0 6,alignx left,aligny center");
+		stTime.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		
 		
 		panelLeft.add(stTime, "flowx,cell 1 6,growx,aligny center");
@@ -1033,6 +1059,11 @@ public class OsuBeat {
 		
 		lblEndTime.setToolTipText("End Time");
 		panelLeft.add(lblEndTime, "cell 0 7,alignx left");
+		etTime.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		
 		
 		panelLeft.add(etTime, "flowx,cell 1 7,growx,aligny center");
@@ -1054,6 +1085,11 @@ public class OsuBeat {
 		
 		
 		panelLeft.add(lblTimingPoint, "cell 0 9,alignx left,aligny center");
+		timingPoint.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		
 		
 		panelLeft.add(timingPoint, "cell 1 9,growx,aligny center");
@@ -1070,6 +1106,11 @@ public class OsuBeat {
 		
 		lblParameter.setToolTipText("Paramenter");
 		panelLeft.add(lblParameter, "cell 0 12,alignx left,aligny center");
+		parameter.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		parameter.setVisible(false);
 		parameter.setModel(new DefaultComboBoxModel(new String[] {"Horizontal Flip", "Vertical Flip", "Additive-Color"}));
 		
@@ -1078,6 +1119,11 @@ public class OsuBeat {
 		lblTriggerType.setVisible(false);
 		
 		panelLeft.add(lblTriggerType, "cell 0 13,alignx left,aligny center");
+		triggerType.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		triggerType.setVisible(false);
 		frmOsubeat.getContentPane().add(panelRes, BorderLayout.EAST);
 		panelRes.setMaximumSize(new Dimension(20, 20));
@@ -1148,6 +1194,11 @@ public class OsuBeat {
 		panelLeft.add(lblParam1, "cell 0 14,alignx left,aligny center");
 		
 		param1 = new JSpinner();
+		param1.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		panelLeft.add(param1, "cell 1 14,growx,aligny center");
 		
 		
@@ -1182,10 +1233,20 @@ public class OsuBeat {
 		
 		
 		panelLeft.add(compound, "cell 0 20 2 1,alignx center,aligny center");
+		stBeat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		
 		
 		stBeat.setModel(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2", "3"}));
 		panelLeft.add(stBeat, "cell 1 6,alignx right,aligny center");
+		etBeat.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		
 		
 		etBeat.setModel(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2", "3"}));
