@@ -368,12 +368,16 @@ public class OsuBeat {
 		//Main Command
 		System.out.println("[Debug - Setting Main Command]: Compound's array size = " + Util.compound.get(operation.getBpm()).size());
 		DefaultComboBoxModel<Object> mainCommandModel = (new DefaultComboBoxModel<Object>((Object[]) Util.compound.get(operation.getBpm()).get(operation.getRes()).toArray()));
+		if(operation.getCommand() == 'L' || operation.getCommand() == 'P') {
+			mainCommandModel.removeElement(operation);
+		}
 		//mainCommandModel.insertElementAt(new Command("Null"), 0);
 		//mainCommand.setModel(new DefaultComboBoxModel<Object>((Object[]) Util.compound.get(operation.getBpm()).get(operation.getRes()).toArray()));
 		mainCommand.setModel(mainCommandModel);
 		exit=true;
 		mainCommand.setSelectedIndex(0);
 		mainCommand.setSelectedItem(operation.getComMain());
+		System.out.println("[Debug - optionRefresh] Main Command: " + operation.getComMain());
 		/*for (int i=0; exit && i < Util.compound.get(operation.getBpm()).size(); i++)
 		{
 			if(mainCommand.getItemAt(i) == operation)
@@ -659,25 +663,27 @@ public class OsuBeat {
 	{
 		if(!node.isLeaf()) {
 			for (int i=0; i<node.getChildCount(); i++) {
-				compoundMove((DefaultMutableTreeNode) node.getChildAt(res), res);
+				compoundMove((DefaultMutableTreeNode) node.getChildAt(i), res);
 			}
 		}
+		Util.com.get(((Command) node.getUserObject()).getBpm()).get(((Command) node.getUserObject()).getRes()).remove(node.getUserObject());
 		((Command) node.getUserObject()).setRes(res);
+		Util.com.get(((Command) node.getUserObject()).getBpm()).get(res).add((Command) node.getUserObject());
 	}
 	
 	public void setCommandValue(Command mCom)
 	{
 		if (mCom.getRes() != source.getSelectedIndex()) {
 			//Setting resource
+			mCom.setComMain(null);
 			compoundMove(mCom.getNode(), source.getSelectedIndex());
+			Util.refresh(mCom.getBpm(), true);
 			//mCom.setRes(source.getSelectedIndex());
 			/*
 			Util.com.get(rightPanel.getSelectedIndex()).get(source.getSelectedIndex()).add((Command) treeCommand.get(rightPanel.getSelectedIndex()));
 			Util.com.get(rightPanel.getSelectedIndex()).get(((Command) treeCommand.get(rightPanel.getSelectedIndex())).getRes()).remove(treeCommand.get(rightPanel.getSelectedIndex()));
 			*/
 			Util.moveNode(mCom.getNode(),Util.res.get(mCom.getRes()).getNode(),rightPanel.getSelectedIndex());
-			
-			
 			Util.refresh(true);
 		}
 		
@@ -724,26 +730,32 @@ public class OsuBeat {
 		mCom.setEtTime((Integer) etTime.getValue());
 		mCom.setEtBeat(etBeat.getSelectedIndex());
 		
-		//Main-Command
-		if (mainCommand.getSelectedItem() == null)
-			mCom.setComMain(null);
-		else {
-			// Notato che veniva già fatto nella funzione moveNode
-			/*DefaultTreeModel model;
-			int pos;
-			Boolean mExit=false;
-			mCom.setComMain((Command) mainCommand.getSelectedItem());
-			model = (DefaultTreeModel) OsuBeat.tree.get(mCom.getRes()).getModel();
-			for (pos = 0; pos < ((Operation) mainCommand.getSelectedItem()).getNode().getChildCount() && !mExit; pos++)
-			{
-				if (mCom.getStartSecond() <= ((Command) ((DefaultMutableTreeNode) mCom.getComMain().getNode().getChildAt(pos)).getUserObject()).getStartSecond()) {
-					mExit = true;
-					pos--;
-				}
-			}*/
-			Util.moveNode(mCom.getNode(), ((Operation) mainCommand.getSelectedItem()).getNode(), mCom.getBpm());
+		if (mainCommand.getSelectedItem() != mCom.getComMain()) {
+			//Main-Command
+			if (mainCommand.getSelectedItem() == null) {
+				mCom.setComMain(null);
+				Util.moveNode(mCom.getNode(), Util.res.get(mCom.getRes())
+						.getNode(), mCom.getBpm());
+			} else {
+				// Notato che veniva già fatto nella funzione moveNode
+				/*DefaultTreeModel model;
+				int pos;
+				Boolean mExit=false;
+				mCom.setComMain((Command) mainCommand.getSelectedItem());
+				model = (DefaultTreeModel) OsuBeat.tree.get(mCom.getRes()).getModel();
+				for (pos = 0; pos < ((Operation) mainCommand.getSelectedItem()).getNode().getChildCount() && !mExit; pos++)
+				{
+					if (mCom.getStartSecond() <= ((Command) ((DefaultMutableTreeNode) mCom.getComMain().getNode().getChildAt(pos)).getUserObject()).getStartSecond()) {
+						mExit = true;
+						pos--;
+					}
+				}*/
+				mCom.setComMain((Command) mainCommand.getSelectedItem());
+				Util.moveNode(mCom.getNode(),
+						((Operation) mainCommand.getSelectedItem()).getNode(),
+						mCom.getBpm());
+			}
 		}
-		
 		//Timing Point
 		mCom.setBpm(timingPoint.getSelectedIndex());
 		
