@@ -276,7 +276,7 @@ public class OsuBeat {
 		source.setModel(new DefaultComboBoxModel<Object>( Util.res.toArray()));
 		for (int i=0; exit && i < Util.res.size(); i++)
 		{
-			if(source.getItemAt(i).toString() == Util.res.get(operation.getRes()).toString())
+			if(source.getItemAt(i) == Util.res.get(operation.getRes()))
 			{
 				source.setSelectedIndex(i);
 				exit = false;
@@ -683,6 +683,9 @@ public class OsuBeat {
 	
 	public void setCommandValue(Command mCom)
 	{
+		System.out.println("[Debug - setCommandValue] Bpm = " + mCom.getBpm());
+		System.out.println("[Debug - setCommandValue] Res = " + mCom.getRes());
+		System.out.println("[Debug - setCommandValue] Node position = " + ((DefaultMutableTreeNode) mCom.getNode().getParent()).getUserObject());
 		if (mCom.getRes() != source.getSelectedIndex()) {
 			//Setting resource
 			mCom.setComMain(null);
@@ -693,7 +696,7 @@ public class OsuBeat {
 			Util.com.get(rightPanel.getSelectedIndex()).get(source.getSelectedIndex()).add((Command) treeCommand.get(rightPanel.getSelectedIndex()));
 			Util.com.get(rightPanel.getSelectedIndex()).get(((Command) treeCommand.get(rightPanel.getSelectedIndex())).getRes()).remove(treeCommand.get(rightPanel.getSelectedIndex()));
 			*/
-			Util.moveNode(mCom.getNode(),Util.res.get(mCom.getRes()).getNode(),rightPanel.getSelectedIndex());
+			Util.moveNode(mCom.getNode(), (DefaultMutableTreeNode) ((DefaultMutableTreeNode) OsuBeat.tree.get(mCom.getBpm()).getModel().getRoot()).getChildAt(source.getSelectedIndex()), rightPanel.getSelectedIndex());
 			Util.refresh(true);
 		}
 		
@@ -744,8 +747,8 @@ public class OsuBeat {
 			//Main-Command
 			if (mainCommand.getSelectedItem() == null) {
 				mCom.setComMain(null);
-				Util.moveNode(mCom.getNode(), Util.res.get(mCom.getRes())
-						.getNode(), mCom.getBpm());
+				System.out.println("[setCommandValue - debug] mainCommand = null, valore di Bpm in mCom = " + mCom.getBpm());
+				Util.moveNode(mCom.getNode(), Util.res.get(mCom.getRes()).getArrayNode().get(mCom.getBpm()), mCom.getBpm());
 			} else {
 				// Notato che veniva già fatto nella funzione moveNode
 				/*DefaultTreeModel model;
@@ -761,9 +764,7 @@ public class OsuBeat {
 					}
 				}*/
 				mCom.setComMain((Command) mainCommand.getSelectedItem());
-				Util.moveNode(mCom.getNode(),
-						((Operation) mainCommand.getSelectedItem()).getNode(),
-						mCom.getBpm());
+				Util.moveNode(mCom.getNode(), ((Operation) mainCommand.getSelectedItem()).getNode(), mCom.getBpm());
 			}
 		}
 		//Timing Point
@@ -906,7 +907,7 @@ public class OsuBeat {
 				{
 					DefaultTreeModel model = (DefaultTreeModel) tree.get(rightPanel.getSelectedIndex()).getModel();
 					DefaultMutableTreeNode node = (DefaultMutableTreeNode) lastSelectedNode.get(rightPanel.getSelectedIndex());
-					Util.refresh(true);
+					//Util.refresh(true);
 					setCommandValue((Command) treeCommand.get(rightPanel.getSelectedIndex()));
 					node.setUserObject(treeCommand.get(rightPanel.getSelectedIndex()));
 					model.nodeChanged(node);
@@ -1205,30 +1206,55 @@ public class OsuBeat {
 		panelLeft.add(lblParam2, "cell 0 15,alignx left,aligny center");
 		
 		param2 = new JSpinner();
+		param2.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		panelLeft.add(param2, "cell 1 15,growx,aligny center");
 		
 		
 		panelLeft.add(lblParam3, "cell 0 16,alignx left,aligny center");
 		
 		param3 = new JSpinner();
+		param3.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		panelLeft.add(param3, "cell 1 16,growx,aligny center");
 		
 		
 		panelLeft.add(lblParam4, "cell 0 17,alignx left,aligny center");
 		
 		param4 = new JSpinner();
+		param4.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		panelLeft.add(param4, "cell 1 17,growx,aligny center");
 		
 		
 		panelLeft.add(lblParam5, "cell 0 18,alignx left,aligny center");
 		
 		param5 = new JSpinner();
+		param5.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		panelLeft.add(param5, "cell 1 18,growx,aligny center");
 		
 		
 		panelLeft.add(lblParam6, "cell 0 19,alignx left,aligny center");
 		
 		param6 = new JSpinner();
+		param6.addChangeListener(new ChangeListener() {
+			public void stateChanged(ChangeEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		panelLeft.add(param6, "cell 1 19,growx");
 		
 		
@@ -1285,7 +1311,7 @@ public class OsuBeat {
 					//Util.refresh(tabSelected); Esclusa
 					model = (DefaultTreeModel) tree.get(tabSelected).getModel();
 					Util.com.get(tabSelected).get(0).get(Util.com.get(tabSelected).get(0).size()-1).setNode(new DefaultMutableTreeNode(Util.com.get(tabSelected).get(0).get(Util.com.get(tabSelected).get(0).size()-1)));
-					model.insertNodeInto(Util.com.get(tabSelected).get(0).get(Util.com.get(tabSelected).get(0).size()-1).getNode(), Util.res.get(0).getNode(), 0);
+					model.insertNodeInto(Util.com.get(tabSelected).get(0).get(Util.com.get(tabSelected).get(0).size()-1).getNode(), (MutableTreeNode) ((DefaultMutableTreeNode) model.getRoot()).getChildAt(0), 0);
 					
 				}
 				else

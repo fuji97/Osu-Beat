@@ -1,6 +1,10 @@
 package osu.beat;
 
-public class Command extends Operation
+import java.util.ArrayList;
+
+import javax.swing.tree.DefaultMutableTreeNode;
+
+public class Command extends Operation implements TreeNode
 {
 	private char command;
 	private int easing;
@@ -9,6 +13,7 @@ public class Command extends Operation
 	private Command comMain;
 	private int param[] = new int[8];
 	private int index;
+	private DefaultMutableTreeNode node;
 	
 	public Command(String name)
 	{
@@ -48,6 +53,14 @@ public class Command extends Operation
 	}
 	
 	//Setters and Getters
+	public DefaultMutableTreeNode getNode() {
+		return node;
+	}
+	
+	public void setNode(DefaultMutableTreeNode node) {
+		this.node = node;
+	}
+	
 	public Command getComMain() {
 		return comMain;
 	}

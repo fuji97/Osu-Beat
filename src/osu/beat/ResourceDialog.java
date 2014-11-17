@@ -300,10 +300,11 @@ public class ResourceDialog extends JDialog {
 		DefaultTreeModel model;
 		
 		Util.res.add(new Resource(vSprite, layer.getSelectedIndex(), origin.getSelectedIndex(), new File(path.getText()), (Integer)posX.getValue(), (Integer)posY.getValue(), (Integer)count.getValue(), (Integer)delay.getValue(), vLoop, 0, 0, 0, name.getText()));
-		Util.res.get(Util.res.size()-1).setNode(new DefaultMutableTreeNode(Util.res.get(Util.res.size()-1)));
+		
 		for (int i = 0; i < Util.bpm.size(); i++) {
+			Util.res.get(Util.res.size()-1).getArrayNode().add(new DefaultMutableTreeNode(Util.res.get(Util.res.size()-1)));
 			model = (DefaultTreeModel) OsuBeat.tree.get(i).getModel();
-			model.insertNodeInto(Util.res.get(Util.res.size()-1).getNode(), (MutableTreeNode) model.getRoot(), ((DefaultMutableTreeNode) model.getRoot()).getChildCount());
+			model.insertNodeInto(Util.res.get(Util.res.size()-1).getArrayNode().get(i), (MutableTreeNode) model.getRoot(), ((DefaultMutableTreeNode) model.getRoot()).getChildCount());
 			Util.compound.get(i).add(new ArrayList<Command>());
 			//Util.compound.get(i).get(Util.compound.size()-1).add(null);	Non mi piace
 		}

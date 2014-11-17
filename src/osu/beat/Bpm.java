@@ -1,11 +1,14 @@
 package osu.beat;
 
+import javax.swing.tree.DefaultMutableTreeNode;
+
 public class Bpm extends Operation
 {
 	private String name;
 	private int bpm;
 	private int offset;
 	private int lastIndex;
+	private DefaultMutableTreeNode node;
 	
 	public Bpm(int bpm, int offset, String name)
 	{
@@ -19,6 +22,14 @@ public class Bpm extends Operation
 	}
 
 	//Getters and setters
+	public DefaultMutableTreeNode getNode() {
+		return node;
+	}
+	
+	public void setNode(DefaultMutableTreeNode node) {
+		this.node = node;
+	}
+	
 	public int getOperation() {
 		return op;
 	}

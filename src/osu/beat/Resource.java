@@ -1,8 +1,11 @@
 package osu.beat;
 
 import java.io.File;
+import java.util.ArrayList;
 
-public class Resource extends Operation
+import javax.swing.tree.DefaultMutableTreeNode;
+
+public class Resource extends Operation implements TreeNode
 {
 	private Boolean sprite;
 	private int main;
@@ -15,6 +18,7 @@ public class Resource extends Operation
 	private int startIndex;
 	private int lastIndex;
 	private int firstIndex;
+	private ArrayList<DefaultMutableTreeNode> node = new ArrayList<DefaultMutableTreeNode>();
 	
 	public Resource(File path, int main)
 	{
@@ -54,6 +58,22 @@ public class Resource extends Operation
 	}
 
 	//Setters and Getters
+	public DefaultMutableTreeNode getNode() {
+		return node.get(Util.mainForm.rightPanel.getSelectedIndex());
+	}
+	
+	public void setNode(DefaultMutableTreeNode node) {
+		this.node.set(Util.mainForm.rightPanel.getSelectedIndex(), node);
+	}
+	
+	public ArrayList<DefaultMutableTreeNode> getArrayNode() {
+		return node;
+	}
+	
+	public void setArrayNode(ArrayList<DefaultMutableTreeNode> node) {
+		this.node = node;
+	}
+	
 	public int getFrameDelay() {
 		return frameDelay;
 	}

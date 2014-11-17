@@ -178,10 +178,12 @@ public class BpmConfig extends JDialog
 	{
 		//TODO
 		Util.bpm.add(new Bpm(0,0,"New BPM"));
+		Util.bpm.get(Util.bpm.size()-1).setNode(new DefaultMutableTreeNode(Util.bpm.get(Util.bpm.size()-1)));
 		Util.com.add(new ArrayList<List<Command>>());
 		for (int i=0; i < Util.res.size(); i++)
 		{
 			Util.com.get(Util.bpm.size()-1).add(new ArrayList<Command>());
+			Util.res.get(i).getArrayNode().add(null);
 		}
 		Util.compound.add(new ArrayList<List<Command>>());
 		for (int i=0; i < Util.res.size(); i++)
@@ -204,6 +206,10 @@ public class BpmConfig extends JDialog
 		Util.mainForm.rightPanel.remove(index);
 		OsuBeat.treeCommand.remove(index);
 		OsuBeat.lastSelectedNode.remove(index);
+		for (int i=0; i < Util.res.size(); i++)
+		{
+			Util.res.get(i).getArrayNode().remove(index);
+		}
 		//bpmList.setSelectedIndex(-1);
 	}
 	

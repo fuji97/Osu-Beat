@@ -8,7 +8,6 @@ public abstract class Operation
 	protected int op;
 	protected String name;
 	protected String lastName;
-	protected DefaultMutableTreeNode node;
 	
 	public abstract String toString();
 	public abstract String toSave();
@@ -20,11 +19,9 @@ public abstract class Operation
 	public abstract void updateName();
 	
 	public DefaultMutableTreeNode getNode() {
-		return node;
+		return null;
 	}
-	
 	public void setNode(DefaultMutableTreeNode node) {
-		this.node = node;
 	}
 	
 }

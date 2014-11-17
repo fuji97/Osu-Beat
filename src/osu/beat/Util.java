@@ -368,6 +368,7 @@ public class Util
 		int pos=0;
 		Boolean mExit=false;
 		DefaultTreeModel model = (DefaultTreeModel) OsuBeat.tree.get(bpm).getModel();
+		System.out.println("[moveNode] Moving child into " + parent.getUserObject());
 		System.out.println("[Debug - moveNode] Child's object: " + ((Command) child.getUserObject()).getStartSecond());
 		model.removeNodeFromParent(child);
 		for (int i=0; (i < parent.getChildCount()) && !mExit; i++)
@@ -405,16 +406,18 @@ public class Util
 		//System.out.println(bpm);
 		indexRefresh = 0;
 		DefaultMutableTreeNode root = new DefaultMutableTreeNode("root");
+		root.setUserObject(Util.bpm.get(bpm));
 		Util.bpm.get(bpm).setNode(root);
 		DefaultMutableTreeNode resN = null;
-		Util.res.get(0).setNode(resN);
+		//Util.res.get(0).setNode(resN);
 		node.add(null);
 		sw.add(0,true);
 		for (int k = 0; k < res.size(); k++) {
 			outOfIndex = true;
 			resN = new DefaultMutableTreeNode(res.get(k).toTree());
-			res.get(k).setNode(resN);
-			resN.setUserObject(Util.res.get(k)); //Added
+			res.get(k).getArrayNode().set(bpm, resN);
+			//res.get(k).setNode(resN);
+			//resN.setUserObject(Util.res.get(k)); //Added
 			indexRefresh = 0;
 			level = 0;
 			while (indexRefresh < com.get(bpm).get(k).size())
