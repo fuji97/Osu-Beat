@@ -414,7 +414,7 @@ public class Util
 		sw.add(0,true);
 		for (int k = 0; k < res.size(); k++) {
 			outOfIndex = true;
-			resN = new DefaultMutableTreeNode(res.get(k).toTree());
+			resN = new DefaultMutableTreeNode(res.get(k));
 			res.get(k).getArrayNode().set(bpm, resN);
 			//res.get(k).setNode(resN);
 			//resN.setUserObject(Util.res.get(k)); //Added
@@ -446,11 +446,9 @@ public class Util
 			OsuBeat.tree.get(bpm).setRootVisible(false);
 			OsuBeat.tree.get(bpm).setShowsRootHandles(true);
 			OsuBeat.tree.get(bpm).addTreeSelectionListener(new TreeEvent());
-			OsuBeat.tree.get(bpm).getSelectionModel()
-					.setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
+			OsuBeat.tree.get(bpm).getSelectionModel().setSelectionMode(TreeSelectionModel.SINGLE_TREE_SELECTION);
 			Util.mainForm.rightPanel.add(OsuBeat.tree.get(bpm), bpm);
-			Util.mainForm.rightPanel.setTitleAt(bpm, Util.bpm.get(bpm)
-					.getName());
+			Util.mainForm.rightPanel.setTitleAt(bpm, Util.bpm.get(bpm).getName());
 			Util.mainForm.rightPanel.setSelectedIndex(bpm);
 		}
 		else

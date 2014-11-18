@@ -192,6 +192,7 @@ public class OsuBeat {
 	private final JLabel lblNullRes = new JLabel("This resource is useless");
 	static Boolean canLoad = false;
 	static ArrayList<DefaultMutableTreeNode> lastSelectedNode = new ArrayList<DefaultMutableTreeNode>();
+	private final JButton btnRewriteAciveTree = new JButton("Rewrite acive tree");
 
 
 	/**
@@ -1355,6 +1356,14 @@ public class OsuBeat {
 			}
 		});
 		toolBar.add(lblBpmConfig);
+		btnRewriteAciveTree.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				Util.updateTree(rightPanel.getSelectedIndex(), false);
+			}
+		});
+		
+		toolBar.add(btnRewriteAciveTree);
 	}
 	
 	
