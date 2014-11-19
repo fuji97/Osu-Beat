@@ -11,9 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
 
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JOptionPane;
 import javax.swing.JTree;
 import javax.swing.event.TreeSelectionEvent;
 import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import javax.swing.tree.MutableTreeNode;
@@ -545,6 +549,36 @@ public class Util
 	{
 		//TODO
 		return 0;
+	}
+	
+	public static int exportOsb()
+	{
+		File savePath;
+		
+		JFileChooser fileChooser = new JFileChooser();
+		 fileChooser.setAcceptAllFileFilterUsed(false);
+		 fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("Osu! Storyboard File", "osb"));
+		 fileChooser.addChoosableFileFilter(new FileNameExtensionFilter("All file", " "));
+		 fileChooser.setDialogTitle("Export as...");
+
+		 int rVal = fileChooser.showSaveDialog(null);
+		 if (rVal == JFileChooser.APPROVE_OPTION) {
+			 System.out.println(fileChooser.getSelectedFile().getName());
+			 try {
+				 File osbFile = new File(fileChooser.getSelectedFile().getAbsolutePath());
+				 if (osbFile.exists()) {
+					 int overwrite = JOptionPane.showConfirmDialog(mainForm.frmOsubeat, "The file " + fileChooser.getSelectedFile().getName() + " already exist, overwrite it?", "Overwrite", JOptionPane.YES_NO_OPTION);
+				 }
+			 }
+			 catch (IOException e) {
+				 
+			 }
+			 return 0;
+		 }
+		 else
+			 return 1;
+		 
+		
 	}
 	
 	public static int importBPM()

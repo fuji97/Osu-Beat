@@ -89,12 +89,13 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
+
 import javax.swing.event.ChangeListener;
 import javax.swing.event.ChangeEvent;
 
 public class OsuBeat {
 
-	private JFrame frmOsubeat;
+	JFrame frmOsubeat;
 	private JSpinner param1;
 	private JSpinner param2;
 	private JSpinner param3;
@@ -401,6 +402,8 @@ public class OsuBeat {
 		
 		//Timing Point
 		timingPoint.setModel(new DefaultComboBoxModel<Object>((Object[]) Util.bpm.toArray()));
+		timingPoint.setSelectedIndex(operation.getBpm());
+		
 		//Params
 		if (operation.getCommand() == 'L')
 		{
@@ -768,9 +771,14 @@ public class OsuBeat {
 				Util.moveNode(mCom.getNode(), ((Operation) mainCommand.getSelectedItem()).getNode(), mCom.getBpm());
 			}
 		}
-		//Timing Point
-		mCom.setBpm(timingPoint.getSelectedIndex());
-		
+		if (mCom.getBpm() != timingPoint.getSelectedIndex()) {
+			//Timing Point
+			OsuBeat.lastSelectedNode.set(mCom.getBpm(), Util.res.get(0).getArrayNode().get(mCom.getBpm()));
+			Util.com.get(mCom.getBpm()).get(mCom.getRes()).remove(mCom);
+			mCom.setBpm(timingPoint.getSelectedIndex());
+			Util.com.get(mCom.getBpm()).get(mCom.getRes()).add(mCom);
+			Util.moveNode(mCom.getNode(), Util.res.get(mCom.getRes()).getArrayNode().get(mCom.getBpm()), mCom.getBpm());
+		}
 		//Parameter
 		mCom.setParam7(parameter.getSelectedIndex());
 		
@@ -954,6 +962,17 @@ public class OsuBeat {
 		
 		
 		mnFile.add(mntmNewMenuItem);
+		mntmExportOsb.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Util.exportOsb();
+			}
+		});
+		mntmExportOsb.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent arg0) {
+				Util.exportOsb();
+			}
+		});
 		
 		
 		mnFile.add(mntmExportOsb);
