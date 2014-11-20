@@ -230,6 +230,11 @@ public class Resource extends Operation implements TreeNode
 		}
 	}
 	
+	public String toOsb()
+	{
+		return null;
+	}
+	
 	@Override
 	public String toSave()
 	{

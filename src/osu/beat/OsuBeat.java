@@ -964,13 +964,7 @@ public class OsuBeat {
 		mnFile.add(mntmNewMenuItem);
 		mntmExportOsb.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				Util.exportOsb();
-			}
-		});
-		mntmExportOsb.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				Util.exportOsb();
+				Util.prepareOsb();
 			}
 		});
 		

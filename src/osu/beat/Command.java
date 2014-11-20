@@ -257,6 +257,11 @@ public class Command extends Operation implements TreeNode
 		return this.getCommand() + " " + this.getName() + " " + this.getStTime() + ":" + this.getStBeat() + " " + this.getEtTime() + ":" + this.getEtBeat();
 	}
 	
+	public String toOsb()
+	{
+		return this.getCommand() + " " + this.getName() + " " + this.getStTime() + ":" + this.getStBeat() + " " + this.getEtTime() + ":" + this.getEtBeat();
+	}
+	
 	//Personal functions
 	public void setCompound(Boolean status)
 	{
