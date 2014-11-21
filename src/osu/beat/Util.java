@@ -675,9 +675,4 @@ public class Util
 		return true;
 	}
 	
-	public static int convertBeat()
-	{
-		//TODO
-		return 0;
-	}
 }

@@ -53,6 +53,20 @@ public class Command extends Operation implements TreeNode
 	}
 	
 	//Setters and Getters
+	public float getStartSecond()
+	{
+		float mBps = Util.bpm.get(this.getBpm()).getBpm()/60;
+		int mOff = Util.bpm.get(this.getBpm()).getOffset();
+		return mBps * this.getStBeat() + mBps/4 * this.getStTime() + mOff;
+	}
+	
+	public float getEndSecond()
+	{
+		float mBps = Util.bpm.get(this.getBpm()).getBpm()/60;
+		int mOff = Util.bpm.get(this.getBpm()).getOffset();
+		return mBps * this.getEtBeat() + mBps/4 * this.getEtTime() + mOff;
+	}
+	
 	public DefaultMutableTreeNode getNode() {
 		return node;
 	}
@@ -259,7 +273,11 @@ public class Command extends Operation implements TreeNode
 	
 	public String toOsb()
 	{
-		return this.getCommand() + " " + this.getName() + " " + this.getStTime() + ":" + this.getStBeat() + " " + this.getEtTime() + ":" + this.getEtBeat();
+		String print;
+		
+		print = null;
+		
+		return print;
 	}
 	
 	//Personal functions
@@ -268,7 +286,7 @@ public class Command extends Operation implements TreeNode
 		//TODO
 	}
 	
-	public float getStartSecond()
+	/*public float getStartSecond()
 	{
 		float beatLen;
 		beatLen = 60/(float)Util.bpm.get(this.getBpm()).getBpm();
@@ -280,5 +298,5 @@ public class Command extends Operation implements TreeNode
 		int beatLen;
 		beatLen = 60/Util.bpm.get(main[1]).getBpm();
 		return ((etTime*4 + etBeat)*beatLen);
-	}
+	}*/
 }
