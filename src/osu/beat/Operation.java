@@ -17,6 +17,8 @@ public abstract class Operation
 	public abstract void setName(String name);
 	public abstract void setLastName(String lastName);
 	public abstract void updateName();
+	public abstract String toOsb();
+	public abstract String toOsbRoot();
 	
 	public DefaultMutableTreeNode getNode() {
 		return null;

@@ -31,7 +31,7 @@ public class TreeEvent implements TreeSelectionListener
 		if (isCommand(Util.mainForm.treeCommand.get(bpm)) == true)
 			Util.mainForm.optionRefresh((Command) Util.mainForm.treeCommand.get(bpm));
 		else
-			Util.mainForm.resRefresh((Resource) Util.mainForm.treeCommand.get(bpm));
+			Util.mainForm.resRefreshOnly((Resource) Util.mainForm.treeCommand.get(bpm));
 	}
 	
 }

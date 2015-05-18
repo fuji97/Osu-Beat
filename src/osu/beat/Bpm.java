@@ -97,4 +97,14 @@ public class Bpm extends Operation
 		return this.getName() + " /// " + this.getBpm() + " - " + this.getOffset();
 	}
 	
+	public String toOsb()
+	{
+		return null;
+	}
+	
+	public String toOsbRoot()
+	{
+		return null; 	
+	}
+	
 }

@@ -12,6 +12,7 @@ public class Command extends Operation implements TreeNode
 	private int main[] = new int[2];
 	private Command comMain;
 	private int param[] = new int[8];
+	private String trigger;
 	private int index;
 	private DefaultMutableTreeNode node;
 	
@@ -215,6 +216,10 @@ public class Command extends Operation implements TreeNode
 		this.param[7] = param;
 	}
 	
+	public void setTrigger(String trigger) {
+		this.trigger = trigger;
+	}
+	
 	public int getParam1() {
 		return param[0];
 	}
@@ -247,6 +252,10 @@ public class Command extends Operation implements TreeNode
 		return param[7];
 	}
 	
+	public String getTrigger() {
+		return trigger;
+	}
+	
 	//Some overrides
 	@Override
 	public String toString()
@@ -271,11 +280,68 @@ public class Command extends Operation implements TreeNode
 		return this.getCommand() + " " + this.getName() + " " + this.getStTime() + ":" + this.getStBeat() + " " + this.getEtTime() + ":" + this.getEtBeat();
 	}
 	
+	public String toOsbRoot()
+	{
+		String print = "";
+		int mBpm = Util.bpm.get(main[1]).getBpm();
+		int mOffset = Util.bpm.get(main[1]).getOffset();
+		int mStart = mOffset + stTime*mBpm + stBeat*(mBpm/4);
+		int mEnd = mOffset + etTime*mBpm + etBeat*(mBpm/4);
+		if (command=='F') 
+			print = "F," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='M')
+			print = "M," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1] + ',' + param[2] + ',' + param[3];
+		else if (command=='X')
+			print = "X," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='Y')
+			print = "Y," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='S')
+			print = "S," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='V')
+			print = "V," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1] + ',' + param[2] + ',' + param[3];
+		else if (command=='R')
+			print = "R," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='C')
+			print = "C," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1] + ',' + param[2] + ',' + param[3] + ',' + param[4] + ',' + param[5];
+		else if (command=='P')
+			print = "P," + easing + ',' + mStart + ',' + mEnd + ',' + param[0];
+		else if (command=='L')
+			print = "L," + mStart + ',' + param[1];
+		else if (command=='T')
+			print = "T," + trigger + ',' + mStart + ',' + mEnd;
+		
+		return print;
+	}
+	
 	public String toOsb()
 	{
-		String print;
-		
-		print = null;
+		String print = "";
+		int mBpm = Util.bpm.get(main[1]).getBpm();
+		//int mOffset = Util.bpm.get(main[0]).getBpm();
+		int mStart = stTime*mBpm + stBeat*(mBpm/4);
+		int mEnd = etTime*mBpm + etBeat*(mBpm/4);
+		if (command=='F') 
+			print = "F," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='M')
+			print = "M," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1] + ',' + param[2] + ',' + param[3];
+		else if (command=='X')
+			print = "X," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='Y')
+			print = "Y," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='S')
+			print = "S," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='V')
+			print = "V," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1] + ',' + param[2] + ',' + param[3];
+		else if (command=='R')
+			print = "R," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1];
+		else if (command=='C')
+			print = "C," + easing + ',' + mStart + ',' + mEnd + ',' + param[0] + ',' + param[1] + ',' + param[2] + ',' + param[3] + ',' + param[4] + ',' + param[5];
+		else if (command=='P')
+			print = "P," + easing + ',' + mStart + ',' + mEnd + ',' + param[0];
+		else if (command=='L')
+			print = "L," + mStart + ',' + param[1];
+		else if (command=='T')
+			print = "T," + trigger + ',' + mStart + ',' + mEnd;
 		
 		return print;
 	}

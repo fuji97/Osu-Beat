@@ -230,9 +230,226 @@ public class Resource extends Operation implements TreeNode
 		}
 	}
 	
+	public String toOsbRoot()
+	{
+		String print = "";
+		if (sprite)
+		{
+			print = "Sprite,";
+			switch (layer)
+			{
+			case 0:
+				print += "Background,";
+				break;
+			case 1:
+				print += "Fail,";
+				break;
+			case 2:
+				print += "Pass,";
+				break;
+			case 3:
+				print += "Foreground,";
+				break;
+			}
+			switch (origin)
+			{
+			case 0:
+				print += "TopLeft,";
+				break;
+			case 1:
+				print += "TopCentre,";
+				break;
+			case 2:
+				print += "TopRight,";
+				break;
+			case 3:
+				print += "CentreLeft,";
+				break;
+			case 4:
+				print += "Centre,";
+				break;
+			case 5:
+				print += "CentreRight,";
+				break;
+			case 6:
+				print += "BottomLeft,";
+				break;
+			case 7:
+				print += "BottomCentre,";
+				break;
+			case 8:
+				print += "BottomRight,";
+				break;
+			}
+			print += "\"sb/" + path.getName() + "\"," + posX + ',' + posY;
+		}
+		else
+		{
+			print = "Animation,";
+			switch (layer)
+			{
+			case 0:
+				print += "Background,";
+				break;
+			case 1:
+				print += "Fail,";
+				break;
+			case 2:
+				print += "Pass,";
+				break;
+			case 3:
+				print += "Foreground,";
+				break;
+			}
+			switch (origin)
+			{
+			case 0:
+				print += "TopLeft,";
+				break;
+			case 1:
+				print += "TopCentre,";
+				break;
+			case 2:
+				print += "TopRight,";
+				break;
+			case 3:
+				print += "CentreLeft,";
+				break;
+			case 4:
+				print += "Centre,";
+				break;
+			case 5:
+				print += "CentreRight,";
+				break;
+			case 6:
+				print += "BottomLeft,";
+				break;
+			case 7:
+				print += "BottomCentre,";
+				break;
+			case 8:
+				print += "BottomRight,";
+				break;
+			}
+			print += "\"sb/" + path.getName() + "\"," + posX + ',' + posY + ',' + frameCount + ',' + frameDelay + ',';
+			//TODO Correct path name (es0.png->es.png)
+			if (loop)
+				print += "LoopForever";
+			else
+				print += "LoopOnce";
+		}
+		return print;
+	}
+	
 	public String toOsb()
 	{
-		return null;
+		String print = "";
+		if (sprite)
+		{
+			print = "Sprite,";
+			switch (layer)
+			{
+			case 0:
+				print += "Background,";
+				break;
+			case 1:
+				print += "Fail,";
+				break;
+			case 2:
+				print += "Pass,";
+				break;
+			case 3:
+				print += "Foreground,";
+				break;
+			}
+			switch (origin)
+			{
+			case 0:
+				print += "TopLeft,";
+				break;
+			case 1:
+				print += "TopCentre,";
+				break;
+			case 2:
+				print += "TopRight,";
+				break;
+			case 3:
+				print += "CentreLeft,";
+				break;
+			case 4:
+				print += "Centre,";
+				break;
+			case 5:
+				print += "CentreRight,";
+				break;
+			case 6:
+				print += "BottomLeft,";
+				break;
+			case 7:
+				print += "BottomCentre,";
+				break;
+			case 8:
+				print += "BottomRight,";
+				break;
+			}
+			print += "\"sb/" + path.getName() + "\"," + posX + ',' + posY;
+		}
+		else
+		{
+			print = "Animation,";
+			switch (layer)
+			{
+			case 0:
+				print += "Background,";
+				break;
+			case 1:
+				print += "Fail,";
+				break;
+			case 2:
+				print += "Pass,";
+				break;
+			case 3:
+				print += "Foreground,";
+				break;
+			}
+			switch (origin)
+			{
+			case 0:
+				print += "TopLeft,";
+				break;
+			case 1:
+				print += "TopCentre,";
+				break;
+			case 2:
+				print += "TopRight,";
+				break;
+			case 3:
+				print += "CentreLeft,";
+				break;
+			case 4:
+				print += "Centre,";
+				break;
+			case 5:
+				print += "CentreRight,";
+				break;
+			case 6:
+				print += "BottomLeft,";
+				break;
+			case 7:
+				print += "BottomCentre,";
+				break;
+			case 8:
+				print += "BottomRight,";
+				break;
+			}
+			print += "\"sb/" + path.getName() + "\"," + posX + ',' + posY + ',' + frameCount + ',' + frameDelay + ',';
+			//TODO Correct path name (es0.png->es.png)
+			if (loop)
+				print += "LoopForever";
+			else
+				print += "LoopOnce";
+		}
+		return print;
 	}
 	
 	@Override

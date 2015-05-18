@@ -187,13 +187,12 @@ public class OsuBeat {
 	private JLabel lblBpmConfig = new JLabel("Set Timing Points");
 	private final JPanel panelRes = new JPanel();
 	private final JLabel lblTriggerType = new JLabel("Trigger Type:");
-	private final JComboBox triggerType = new JComboBox();
+	private final JTextField triggerType = new JTextField();
 	final JTabbedPane rightPanel = new JTabbedPane(JTabbedPane.TOP);
 	static ArrayList<Operation> treeCommand = new ArrayList<Operation>();
 	private final JLabel lblNullRes = new JLabel("This resource is useless");
 	static Boolean canLoad = false;
 	static ArrayList<DefaultMutableTreeNode> lastSelectedNode = new ArrayList<DefaultMutableTreeNode>();
-	private final JButton btnRewriteAciveTree = new JButton("Rewrite acive tree");
 
 
 	/**
@@ -218,6 +217,7 @@ public class OsuBeat {
 						OsuBeat window = new OsuBeat();
 						window.setLanguage();
 						window.frmOsubeat.setVisible(true);
+						source.setEnabled(false);
 						
 						// Problemi all'UI
 						source.updateUI();
@@ -240,6 +240,7 @@ public class OsuBeat {
 	//Set Language
 	public void setLanguage()
 	{
+		easing.setEnabled(false);
 		easing.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				launchUpdateMethod();
@@ -248,6 +249,7 @@ public class OsuBeat {
 		//TODO
 		//source.setModel(new DefaultComboBoxModel<String>(new String[] {LanguageLoader.resAdd}));
 		easing.setModel(new DefaultComboBoxModel<String>(new String[] {LanguageLoader.easingNo, LanguageLoader.easingOut, LanguageLoader.easingIn}));
+		command.setEnabled(false);
 		command.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				launchUpdateMethod();
@@ -273,6 +275,31 @@ public class OsuBeat {
 	public void optionRefresh(Command operation)
 	{
 		canLoad = false;
+		
+		//Enable all
+		lblResource.setEnabled(true);
+		source.setEnabled(true);
+		lblCommand.setEnabled(true);
+		command.setEnabled(true);
+		lblName.setEnabled(true);
+		name.setEnabled(true);
+		lblSubCommand.setEnabled(true);
+		subCommand.setEnabled(true);
+		lblEasing.setEnabled(true);
+		easing.setEnabled(true);
+		lblStartTime.setEnabled(true);
+		stTime.setEnabled(true);
+		p1.setEnabled(true);
+		stBeat.setEnabled(true);
+		lblEndTime.setEnabled(true);
+		etTime.setEnabled(true);
+		p1.setEnabled(true);
+		etBeat.setEnabled(true);
+		lblMainCommand.setEnabled(true);
+		mainCommand.setEnabled(true);
+		lblTimingPoint.setEnabled(true);
+		timingPoint.setEnabled(true);
+		
 		//Resource
 		Boolean exit=true;
 		source.setModel(new DefaultComboBoxModel<Object>( Util.res.toArray()));
@@ -366,6 +393,9 @@ public class OsuBeat {
 		else if (operation.getStBeat()  == 3)
 			stBeat.setSelectedIndex(3);
 		//End Time
+		stTime.setEnabled(true);
+		stBeat.setEnabled(true);
+		lblEndTime.setEnabled(true);
 		etTime.setValue(operation.getEtTime());
 		if (operation.getEtBeat()  == 0)
 			etBeat.setSelectedIndex(0);
@@ -405,7 +435,7 @@ public class OsuBeat {
 		timingPoint.setSelectedIndex(operation.getBpm());
 		
 		//Params
-		if (operation.getCommand() == 'L')
+		if (operation.getCommand() == 'F')
 		{
 			lblParam1.setText("Start Opacity:");
 			lblParam2.setText("End opacity:");
@@ -626,6 +656,11 @@ public class OsuBeat {
 		}
 		else if (operation.getCommand() == 'T')
 		{
+			etTime.setValue(0);
+			etBeat.setSelectedIndex(0);
+			etTime.setEnabled(false);
+			etBeat.setEnabled(false);
+			lblEndTime.setEnabled(false);
 			lblParam1.setVisible(false);
 			param1.setVisible(false);
 			lblParam2.setVisible(false);
@@ -642,10 +677,10 @@ public class OsuBeat {
 			parameter.setVisible(false);
 			lblTriggerType.setVisible(true);
 			triggerType.setVisible(true);
-			triggerType.setSelectedIndex(operation.getParam8());
+			triggerType.setText(operation.getTrigger());
 		}
 		
-		if (operation.getCommand() == 'T')
+		/*if (operation.getCommand() == 'T')
 		{
 			lblTriggerType.setVisible(true);
 			triggerType.setVisible(true);
@@ -665,7 +700,7 @@ public class OsuBeat {
 		{
 			lblParameter.setVisible(false);
 			parameter.setVisible(false);
-		}
+		}*/
 
 		resRefresh(Util.res.get(operation.getRes()));
 		
@@ -783,7 +818,7 @@ public class OsuBeat {
 		mCom.setParam7(parameter.getSelectedIndex());
 		
 		//Trigger Type
-		mCom.setParam8(triggerType.getSelectedIndex());
+		mCom.setTrigger(triggerType.getText());
 		
 		//Params
 		mCom.setParam1((Integer) param1.getValue());
@@ -795,6 +830,49 @@ public class OsuBeat {
 		
 		
 		
+	}
+	
+	public void resRefreshOnly(Resource res)
+	{
+		lblResource.setEnabled(false);
+		source.setEnabled(false);
+		lblCommand.setEnabled(false);
+		command.setEnabled(false);
+		lblName.setEnabled(false);
+		name.setEnabled(false);
+		lblSubCommand.setEnabled(false);
+		subCommand.setEnabled(false);
+		lblEasing.setEnabled(false);
+		easing.setEnabled(false);
+		lblStartTime.setEnabled(false);
+		stTime.setEnabled(false);
+		p1.setEnabled(false);
+		stBeat.setEnabled(false);
+		lblEndTime.setEnabled(false);
+		etTime.setEnabled(false);
+		p1.setEnabled(false);
+		etBeat.setEnabled(false);
+		lblMainCommand.setEnabled(false);
+		mainCommand.setEnabled(false);
+		lblTimingPoint.setEnabled(false);
+		timingPoint.setEnabled(false);
+		lblTriggerType.setVisible(false);
+		lblParameter.setVisible(false);
+		parameter.setVisible(false);
+		lblParam1.setVisible(false);
+		param1.setVisible(false);
+		lblParam2.setVisible(false);
+		param2.setVisible(false);
+		lblParam3.setVisible(false);
+		param3.setVisible(false);
+		lblParam4.setVisible(false);
+		param4.setVisible(false);
+		lblParam5.setVisible(false);
+		param5.setVisible(false);
+		lblParam6.setVisible(false);
+		param6.setVisible(false);		
+		
+		resRefresh(res);
 	}
 	
 	public void resRefresh(Resource res)
@@ -999,6 +1077,7 @@ public class OsuBeat {
 		
 		panelMain.setLeftComponent(panelLeft);
 		panelLeft.setLayout(new MigLayout("", "[51px,grow,left][28px,grow]", "[][20px][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][][]"));
+		lblResource.setEnabled(false);
 		
 		
 		lblResource.setToolTipText("Select the resource that the command use");
@@ -1011,6 +1090,7 @@ public class OsuBeat {
 				launchUpdateMethod();
 			}
 		});
+		lblCommand.setEnabled(false);
 		
 		
 		lblCommand.setToolTipText("Select the type of command");
@@ -1018,11 +1098,13 @@ public class OsuBeat {
 		
 		
 		panelLeft.add(command, "cell 1 1,growx");
+		lblName.setEnabled(false);
 		
 		
 		panelLeft.add(lblName, "cell 0 2,alignx left,aligny center");
 		
 		name = new JTextField();
+		name.setEnabled(false);
 		name.addFocusListener(new FocusAdapter() {
 			@Override
 			public void focusLost(FocusEvent arg0) {
@@ -1048,6 +1130,7 @@ public class OsuBeat {
 		
 		
 		panelLeft.add(commands, "cell 0 4 2 1");
+		lblEasing.setEnabled(false);
 		
 		
 		lblEasing.setToolTipText("Select the easing of the command");
@@ -1055,10 +1138,12 @@ public class OsuBeat {
 		
 		//JComboBox easing = new JComboBox();
 		panelLeft.add(easing, "cell 1 5,growx");
+		lblStartTime.setEnabled(false);
 		
 		
 		lblStartTime.setToolTipText("Start Time");
 		panelLeft.add(lblStartTime, "cell 0 6,alignx left,aligny center");
+		stTime.setEnabled(false);
 		stTime.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				launchUpdateMethod();
@@ -1067,13 +1152,16 @@ public class OsuBeat {
 		
 		
 		panelLeft.add(stTime, "flowx,cell 1 6,growx,aligny center");
+		p1.setEnabled(false);
 		
 		
 		panelLeft.add(p1, "cell 1 6,alignx center,aligny center");
+		lblEndTime.setEnabled(false);
 		
 		
 		lblEndTime.setToolTipText("End Time");
 		panelLeft.add(lblEndTime, "cell 0 7,alignx left");
+		etTime.setEnabled(false);
 		etTime.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				launchUpdateMethod();
@@ -1082,12 +1170,15 @@ public class OsuBeat {
 		
 		
 		panelLeft.add(etTime, "flowx,cell 1 7,growx,aligny center");
+		p2.setEnabled(false);
 		
 		
 		panelLeft.add(p2, "cell 1 7,alignx center,aligny center");
+		lblMainCommand.setEnabled(false);
 		
 		
 		panelLeft.add(lblMainCommand, "cell 0 8,alignx left,aligny center");
+		mainCommand.setEnabled(false);
 		mainCommand.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				launchUpdateMethod();
@@ -1097,9 +1188,11 @@ public class OsuBeat {
 		
 		//mainCommand.setModel(new DefaultComboBoxModel<String>(new String[] {"Null"}));
 		panelLeft.add(mainCommand, "cell 1 8,growx,aligny center");
+		lblTimingPoint.setEnabled(false);
 		
 		
 		panelLeft.add(lblTimingPoint, "cell 0 9,alignx left,aligny center");
+		timingPoint.setEnabled(false);
 		timingPoint.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				launchUpdateMethod();
@@ -1134,12 +1227,6 @@ public class OsuBeat {
 		lblTriggerType.setVisible(false);
 		
 		panelLeft.add(lblTriggerType, "cell 0 13,alignx left,aligny center");
-		triggerType.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				launchUpdateMethod();
-			}
-		});
-		triggerType.setVisible(false);
 		frmOsubeat.getContentPane().add(panelRes, BorderLayout.EAST);
 		panelRes.setMaximumSize(new Dimension(20, 20));
 		panelRes.setComponentOrientation(ComponentOrientation.LEFT_TO_RIGHT);
@@ -1150,38 +1237,57 @@ public class OsuBeat {
 		
 		
 		lblResourceN.setFont(new Font("Tahoma", Font.BOLD, 14));
+		lblType.setEnabled(false);
 		panelRes.add(lblType, "cell 0 1,alignx left,aligny center");
+		type.setEnabled(false);
 		panelRes.add(type, "cell 1 1,growx,aligny center");
 		
 		
 		type.setModel(new DefaultComboBoxModel<String>(new String[] {"Sprite", "Animation"}));
+		lblLayer.setEnabled(false);
 		panelRes.add(lblLayer, "cell 0 2,alignx left,aligny center");
+		layer.setEnabled(false);
 		panelRes.add(layer, "cell 1 2,growx,aligny center");
 		
 		
 		layer.setModel(new DefaultComboBoxModel<String>(new String[] {"Background", "Fail", "Pass", "Foreground"}));
+		lblOrigin.setEnabled(false);
 		panelRes.add(lblOrigin, "cell 0 3,alignx left,aligny center");
+		origin.setEnabled(false);
 		panelRes.add(origin, "cell 1 3,growx,aligny center");
 		origin.setModel(new DefaultComboBoxModel(new String[] {"TopLeft", "TopCentre", "TopRight", "CentreLeft", "Centre", "CentreRight", "BottomLeft", "BottomCentre", "BottomRight"}));
+		lblPath.setEnabled(false);
 		panelRes.add(lblPath, "cell 0 4,alignx left,aligny center");
+		btnBrowse.setEnabled(false);
 		panelRes.add(btnBrowse, "cell 1 4,growx,aligny center");
 		
 		txtPath = new JTextField();
+		txtPath.setEnabled(false);
 		panelRes.add(txtPath, "cell 0 5 2 1,growx,aligny center");
 		txtPath.setColumns(10);
+		lblPosition.setEnabled(false);
 		panelRes.add(lblPosition, "cell 0 6,alignx left,aligny center");
 		
 		posX = new JSpinner();
+		posX.setEnabled(false);
 		panelRes.add(posX, "flowx,cell 1 6,growx,aligny center");
+		divisorPos.setEnabled(false);
 		panelRes.add(divisorPos, "cell 1 6,alignx center,aligny center");
 		
 		posY = new JSpinner();
+		posY.setEnabled(false);
 		panelRes.add(posY, "cell 1 6,growx,aligny center");
+		lblFrameCount.setEnabled(false);
 		panelRes.add(lblFrameCount, "cell 0 7,alignx left,aligny center");
+		frameCount.setEnabled(false);
 		panelRes.add(frameCount, "cell 1 7,growx,aligny center");
+		lblFrameDelay.setEnabled(false);
 		panelRes.add(lblFrameDelay, "cell 0 8,alignx left,aligny center");
+		frameDelay.setEnabled(false);
 		panelRes.add(frameDelay, "cell 1 8,growx,aligny center");
+		lblLoopType.setEnabled(false);
 		panelRes.add(lblLoopType, "cell 0 9,alignx left,aligny center");
+		loop.setEnabled(false);
 		panelRes.add(loop, "cell 1 9,growx,aligny center");
 		loop.setModel(new DefaultComboBoxModel(new String[] {"Loop Forever", "Once Loop"}));
 		lblNullRes.setVisible(false);
@@ -1201,69 +1307,86 @@ public class OsuBeat {
 				}
 			}
 		});
-		triggerType.setModel(new DefaultComboBoxModel(new String[] {"HitSoundClap", "HitSoundFinish", "HitSoundWhistle", "Passing", "Failing"}));
+		triggerType.setVisible(false);
+		triggerType.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				launchUpdateMethod();
+			}
+		});
 		
 		panelLeft.add(triggerType, "cell 1 13,growx,aligny center");
+		lblParam1.setVisible(false);
 		
 		
 		panelLeft.add(lblParam1, "cell 0 14,alignx left,aligny center");
 		
 		param1 = new JSpinner();
+		param1.setVisible(false);
 		param1.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				launchUpdateMethod();
 			}
 		});
 		panelLeft.add(param1, "cell 1 14,growx,aligny center");
+		lblParam2.setVisible(false);
 		
 		
 		panelLeft.add(lblParam2, "cell 0 15,alignx left,aligny center");
 		
 		param2 = new JSpinner();
+		param2.setVisible(false);
 		param2.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				launchUpdateMethod();
 			}
 		});
 		panelLeft.add(param2, "cell 1 15,growx,aligny center");
+		lblParam3.setVisible(false);
 		
 		
 		panelLeft.add(lblParam3, "cell 0 16,alignx left,aligny center");
 		
 		param3 = new JSpinner();
+		param3.setVisible(false);
 		param3.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				launchUpdateMethod();
 			}
 		});
 		panelLeft.add(param3, "cell 1 16,growx,aligny center");
+		lblParam4.setVisible(false);
 		
 		
 		panelLeft.add(lblParam4, "cell 0 17,alignx left,aligny center");
 		
 		param4 = new JSpinner();
+		param4.setVisible(false);
 		param4.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				launchUpdateMethod();
 			}
 		});
 		panelLeft.add(param4, "cell 1 17,growx,aligny center");
+		lblParam5.setVisible(false);
 		
 		
 		panelLeft.add(lblParam5, "cell 0 18,alignx left,aligny center");
 		
 		param5 = new JSpinner();
+		param5.setVisible(false);
 		param5.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				launchUpdateMethod();
 			}
 		});
 		panelLeft.add(param5, "cell 1 18,growx,aligny center");
+		lblParam6.setVisible(false);
 		
 		
 		panelLeft.add(lblParam6, "cell 0 19,alignx left,aligny center");
 		
 		param6 = new JSpinner();
+		param6.setVisible(false);
 		param6.addChangeListener(new ChangeListener() {
 			public void stateChanged(ChangeEvent arg0) {
 				launchUpdateMethod();
@@ -1273,6 +1396,7 @@ public class OsuBeat {
 		
 		
 		panelLeft.add(compound, "cell 0 20 2 1,alignx center,aligny center");
+		stBeat.setEnabled(false);
 		stBeat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				launchUpdateMethod();
@@ -1282,6 +1406,7 @@ public class OsuBeat {
 		
 		stBeat.setModel(new DefaultComboBoxModel<String>(new String[] {"0", "1", "2", "3"}));
 		panelLeft.add(stBeat, "cell 1 6,alignx right,aligny center");
+		etBeat.setEnabled(false);
 		etBeat.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				launchUpdateMethod();
@@ -1369,14 +1494,6 @@ public class OsuBeat {
 			}
 		});
 		toolBar.add(lblBpmConfig);
-		btnRewriteAciveTree.addMouseListener(new MouseAdapter() {
-			@Override
-			public void mouseClicked(MouseEvent arg0) {
-				Util.updateTree(rightPanel.getSelectedIndex(), false);
-			}
-		});
-		
-		toolBar.add(btnRewriteAciveTree);
 	}
 	
 	
